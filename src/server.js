@@ -1,4 +1,7 @@
-import { prisma } from "../prismaClient.js";
+
+import { prisma } from "./prismaClient.js";
+
+
 import { nanoid } from "nanoid";
 
 function trimTo(s, max = 1000) {
