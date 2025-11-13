@@ -10,7 +10,7 @@
     "prisma:migrate:deploy": "prisma migrate deploy"
   },
   "dependencies": {
-    "@prisma/client": "^5.19.1",
+    "@prisma/client": "^6.19.0",
     "cors": "^2.8.5",
     "discord.js": "^14.11.0",
     "dotenv": "^16.3.1",
@@ -19,7 +19,7 @@
     "nanoid": "^4.0.0"
   },
   "devDependencies": {
-    "prisma": "^5.19.1",
-    "nodemon": "^3.1.0"
+    "nodemon": "^3.1.0",
+    "prisma": "^6.19.0"
   }
 }
