@@ -1,15 +1,16 @@
-
+import express from "express";
+import path from "path";
 import { prisma } from "./prismaClient.js";
-
-
 import { nanoid } from "nanoid";
 
+// --- Helper function ---
 function trimTo(s, max = 1000) {
   if (!s) return null;
   const t = String(s).trim();
   return t.length > max ? t.slice(0, max) : t;
 }
 
+// --- Handlers ---
 export async function createApplication(req, res) {
   try {
     const body = req.body || {};
@@ -62,3 +63,26 @@ export async function listApplications(req, res) {
     return res.status(500).json({ error: 'server error' });
   }
 }
+
+// --- Start Express server ---
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middleware
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Serve static files (your index.html, JS, CSS)
+app.use(express.static(path.join(process.cwd(), "public")));
+
+// API endpoints
+app.post("/api/applications", createApplication);
+app.get("/api/applications", listApplications);
+
+// Fallback route to index.html for browser access
+app.get("/", (req, res) => {
+  res.sendFile(path.join(process.cwd(), "public/index.html"));
+});
+
+// Start server
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
