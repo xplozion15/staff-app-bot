@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: staff-app-bot
+    env: node
+    plan: free
+    buildCommand: npm install && npx prisma generate
+    startCommand: npm start
+    envVars:
+      - key: DISCORD_TOKEN
+        sync: false
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DISCORD_GUILD_ID
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: BOT_PUBLIC_URL
+        sync: false
+      - key: PORT
+        value: 3000
+      - key: ADMIN_ROLE_NAME
+        sync: false
+      - key: STAFF_API_KEY
+        sync: false

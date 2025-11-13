@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Submissions - Staff Dashboard</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="stylesheet" href="/css/style.css" />
+  <style>
+    /* small overrides for dashboard */
+    .controls { display:flex; gap:8px; margin-bottom:12px; align-items:center; }
+    .listItem { border:1px solid #eee; padding:12px; margin-top:8px; border-radius:8px; background:#fff; }
+    pre { white-space:pre-wrap; word-break:break-word; margin:6px 0 0 0; }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <h1>Staff - Applications</h1>
+      <p class="muted">Paste the STAFF_API_KEY (kept in server env) to load submissions.</p>
+    </header>
+
+    <section class="card">
+      <div class="controls">
+        <input id="apiKey" class="input" placeholder="Paste STAFF_API_KEY here" />
+        <button id="loadBtn" class="btn">Load</button>
+        <button id="refreshBtn" class="btn">Refresh</button>
+      </div>
+      <div id="list"></div>
+    </section>
+  </main>
+
+  <script src="/js/submissions.js"></script>
+</body>
+</html>
