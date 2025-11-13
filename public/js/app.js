@@ -1,10 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Get Discord info from URL query parameters
   const params = new URLSearchParams(window.location.search);
   const discord_user_id = params.get('discord_user_id') || '';
   const discord_username = params.get('discord_username') || '';
 
-  // Pre-fill hidden fields
+  // Fill hidden fields
   document.getElementById('discord_user_id').value = discord_user_id;
   document.getElementById('discord_username').value = discord_username;
 
@@ -16,8 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
     msg.textContent = 'Submitting...';
 
     const payload = {
-      discordUserId: discord_user_id,
-      discordUsername: discord_username,
+      discordUserId: document.getElementById('discord_user_id').value,
+      discordUsername: document.getElementById('discord_username').value || '',
       motivation: document.getElementById('motivation').value.trim(),
       experience: document.getElementById('experience').value.trim(),
       roleInterest: document.getElementById('roleInterest').value.trim(),
@@ -27,17 +26,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Client-side validation
     if (!payload.discordUserId || !payload.discordUsername) {
-      msg.textContent = "⚠️ Please open this form via the bot link so your Discord info is pre-filled.";
+      msg.textContent = "Please open this form via the bot link so Discord info is auto-filled.";
       return;
     }
-
     if (!payload.motivation || !payload.roleInterest || !payload.activity) {
-      msg.textContent = "⚠️ Please fill all required fields: Motivation, Role Interest, Activity.";
+      msg.textContent = "Please fill all required fields (motivation, role interest, activity).";
       return;
     }
 
     try {
-      const res = await fetch('/api/applications', { // fixed route
+      const res = await fetch('/api/applications', {  // <-- corrected endpoint
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -45,23 +43,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!res.ok) {
         const text = await res.text();
-        throw new Error(text || 'Server error');
+        msg.textContent = "Server error: " + text;
+        console.error("Server response:", text);
+        return;
       }
 
       const data = await res.json();
       if (data.ok) {
         msg.textContent = "✅ Submitted! Application ID: " + data.id + " — We'll DM you with updates.";
         form.reset();
-
-        // Refill Discord info after reset
+        // Refill Discord hidden fields
         document.getElementById('discord_user_id').value = discord_user_id;
         document.getElementById('discord_username').value = discord_username;
       } else {
-        msg.textContent = "⚠️ Error: " + (data.error || 'unknown');
+        msg.textContent = "Error: " + (data.error || 'unknown');
       }
     } catch (err) {
       console.error(err);
-      msg.textContent = "⚠️ Network or server error. Please try again later.";
+      msg.textContent = "Network error: " + err.message;
     }
   });
 });
